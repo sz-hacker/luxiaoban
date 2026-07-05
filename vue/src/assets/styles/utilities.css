@@ -1,0 +1,92 @@
+/* 标准滚动页：水平全宽，垂直留少量间距 */
+.page {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: var(--page-margin-y) 0 var(--page-margin-bottom);
+}
+
+/** 纵向滚动容器（任务列表、首页等） */
+.scroll-y {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/** 文案/标题水平内边距 */
+.text-inset {
+  padding-left: var(--page-margin-x);
+  padding-right: var(--page-margin-x);
+}
+
+/** 全宽区块（抵消父级 text-inset 或作为列表容器） */
+.full-bleed {
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow);
+  padding: var(--card-padding);
+  margin-bottom: var(--card-gap);
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--touch-min);
+  padding: var(--space-2) var(--space-4);
+  background: linear-gradient(135deg, #1677ff, #4096ff);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-md);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--touch-min);
+  padding: var(--space-2) var(--space-3);
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: var(--font-sm);
+  cursor: pointer;
+}
+
+.empty-state {
+  text-align: center;
+  padding: var(--space-5) var(--page-margin-x);
+  color: var(--text-secondary);
+}
+
+.loading {
+  text-align: center;
+  padding: var(--space-4);
+  color: var(--text-secondary);
+}
+
+.total-tip {
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-2);
+}

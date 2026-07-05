@@ -1,0 +1,57 @@
+/* 路由切换：左滑（进入下一 Tab） */
+.slide-left-enter-active,
+.slide-left-leave-active {
+  transition:
+    transform var(--transition-duration) cubic-bezier(0.4, 0, 0.2, 1),
+    opacity var(--transition-duration) ease;
+}
+.slide-left-enter-from {
+  transform: translateX(100%);
+  opacity: 0;
+}
+.slide-left-leave-to {
+  transform: translateX(-28%);
+  opacity: 0;
+}
+
+/* 路由切换：右滑（返回上一 Tab） */
+.slide-right-enter-active,
+.slide-right-leave-active {
+  transition:
+    transform var(--transition-duration) cubic-bezier(0.4, 0, 0.2, 1),
+    opacity var(--transition-duration) ease;
+}
+.slide-right-enter-from {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+.slide-right-leave-to {
+  transform: translateX(28%);
+  opacity: 0;
+}
+
+/* 淡入淡出 */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.22s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* 上滑（进入登录） */
+.slide-up-enter-active,
+.slide-up-leave-active {
+  transition:
+    transform var(--transition-duration) cubic-bezier(0.4, 0, 0.2, 1),
+    opacity var(--transition-duration) ease;
+}
+.slide-up-enter-from {
+  transform: translateY(100%);
+  opacity: 0;
+}
+.slide-up-leave-to {
+  transform: translateY(-12%);
+  opacity: 0;
+}

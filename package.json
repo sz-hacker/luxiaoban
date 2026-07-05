@@ -1,0 +1,13 @@
+{
+  "name": "luxiaoban",
+  "private": true,
+  "description": "智能案卷评查 — EdgeOne 部署仓库",
+  "scripts": {
+    "postinstall": "npm install --prefix vue",
+    "build": "node scripts/build-edgeone.mjs",
+    "dev": "npm run dev --prefix vue"
+  },
+  "engines": {
+    "node": ">=20.18.0"
+  }
+}

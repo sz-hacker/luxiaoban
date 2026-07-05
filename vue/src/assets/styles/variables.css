@@ -1,0 +1,73 @@
+:root {
+  --primary: #1677ff;
+  --primary-light: #4096ff;
+  --bg: #f0f5ff;
+  --card-bg: #ffffff;
+  --text: #1a1a1a;
+  --text-secondary: #8c8c8c;
+  --border: #e8ecf0;
+  --success: #52c41a;
+  --warning: #faad14;
+  --danger: #ff4d4f;
+
+  /** 安全区（需 viewport-fit=cover） */
+  --shell-safe-top: env(safe-area-inset-top, 0px);
+  --shell-safe-bottom: env(safe-area-inset-bottom, 0px);
+
+  /**
+   * 间距：clamp(最小, 视口比例, 最大)，随屏幕宽度缩放
+   */
+  --space-1: clamp(2px, 0.6vw, 4px);
+  --space-2: clamp(4px, 1.2vw, 8px);
+  --space-3: clamp(10px, 3.2vw, 16px);
+  --space-4: clamp(16px, 4.8vw, 24px);
+  --space-5: clamp(20px, 6.4vw, 32px);
+
+  /** 文案/卡片内边距（列表区块保持全宽） */
+  --page-margin-x: clamp(8px, 3.2vw, 16px);
+  --page-margin-y: clamp(8px, 2.5vw, 12px);
+  --page-margin-bottom: clamp(8px, 2.5vw, 16px);
+
+  /**
+   * 字号：随屏宽缩放
+   */
+  --font-xs: clamp(10px, 2.7vw, 11px);
+  --font-sm: clamp(12px, 3.2vw, 13px);
+  --font-md: clamp(14px, 3.7vw, 15px);
+  --font-lg: clamp(16px, 4.3vw, 18px);
+  --font-xl: clamp(20px, 6.4vw, 26px);
+  --font-display: clamp(22px, 6.9vw, 28px);
+
+  /** 圆角 */
+  --radius-sm: clamp(6px, 2vw, 8px);
+  --radius-md: clamp(8px, 3vw, 12px);
+  --radius: var(--radius-md);
+  --shadow: 0 2px 12px rgba(22, 119, 255, 0.08);
+
+  /**
+   *  chrome 高度：随屏宽微调，对齐 iOS 规范
+   */
+  --tabbar-h: clamp(44px, 13.6vw, 50px);
+  --header-h: clamp(44px, 12.8vw, 46px);
+  --sub-nav-h: clamp(40px, 12vw, 44px);
+  --touch-min: clamp(40px, 12vw, 44px);
+
+  /**
+   * 可用内容高度（供需要 calc 的场景引用）
+   * --content-h-tab：有底部 Tab 的主 Tab 页
+   * --content-h-full：无 Tab（登录/评查流程等）
+   */
+  --content-h-tab: calc(100dvh - var(--tabbar-h) - var(--shell-safe-bottom));
+  --content-h-full: calc(100dvh - var(--shell-safe-top));
+
+  --card-padding: var(--space-3);
+  --card-gap: var(--space-3);
+
+  /** Vant 列表全宽 */
+  --van-cell-group-inset-padding: 0;
+  --van-cell-group-inset-radius: 0;
+  --van-padding-md: var(--page-margin-x);
+
+  --header-gradient: linear-gradient(135deg, #1677ff 0%, #4096ff 100%);
+  --transition-duration: 0.28s;
+}

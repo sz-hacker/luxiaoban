@@ -1,0 +1,40 @@
+---
+description: Apple HIG 移动端 UI 间距与触控规范（luxiaoban H5）
+globs: vue/**/*.{vue,css,ts}
+alwaysApply: false
+---
+
+# Apple HIG 移动端 UI
+
+对齐 [Apple HIG](https://developer.apple.com/design/human-interface-guidelines/)，尺寸用 **clamp 响应式 token**（见 `variables.css`），非固定 px。
+
+## 间距令牌
+
+| 变量 | 策略 | 用途 |
+|------|------|------|
+| `--space-1` ~ `--space-5` | clamp + vw | margin/padding/gap |
+| `--page-margin-x` | clamp(8px, 3.2vw, 16px) | 文案/卡片内边距 |
+| `--page-margin-y/bottom` | clamp | 页面垂直间距 |
+| `--touch-min` | clamp(40px, 12vw, 44px) | 最小触控高度 |
+
+## 必须遵守
+
+1. **列表全宽**：`van-cell-group`、统计 grid 用 `.full-bleed`，水平不叠 `--page-margin-x`
+2. **8pt 网格**：间距优先 `--space-*`，避免 `12px`、`14px` 等非网格值
+3. **触控目标**：按钮、Tab、列表行 ≥ `--touch-min`
+4. **Safe Area**：`index.html` 含 `viewport-fit=cover`；底栏用 `van-tabbar safe-area-inset-bottom`
+5. **SubNav 顶栏**：`.sub-nav-tabs` 用 `margin: calc(-1 * var(--page-margin-y)) 0 var(--space-3)` 抵消垂直 padding
+
+## 示例
+
+```css
+/* ✅ */
+.page { padding: var(--page-margin-y) 0 var(--page-margin-bottom); }
+.card { padding: var(--card-padding); margin-bottom: var(--card-gap); }
+
+/* ❌ */
+padding: 12px 16px;
+margin: 0 16px; /* 列表区不要水平 margin */
+```
+
+详细说明见 `.cursor/skills/apple-hig-mobile/SKILL.md`。

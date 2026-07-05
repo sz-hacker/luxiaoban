@@ -1,0 +1,69 @@
+---
+description: Vue H5 响应式布局与尺寸规范（宽度/高度随屏幕）
+globs: vue/**/*.{vue,css,ts}
+alwaysApply: false
+---
+
+# 响应式布局规范
+
+## 核心原则
+
+- **禁止写死布局尺寸**：不用 `480px`、`16px` 等固定页面宽高；用 `variables.css` 中的 token
+- **宽度随屏宽**：`.app-shell` 为 `width: 100%`，列表用 `.full-bleed` 铺满
+- **高度随视口**：根节点 `min-height: 100dvh`；内容区用 flex 链撑满 Tab 上方区域
+
+## 尺寸 Token（`vue/src/assets/styles/variables.css`）
+
+| 类型 | 变量 | 说明 |
+|------|------|------|
+| 间距 | `--space-1` ~ `--space-5` | `clamp`，随 vw 缩放 |
+| 边距 | `--page-margin-x/y/bottom` | 仅文案/卡片；列表区水平为 0 |
+| 字号 | `--font-xs` ~ `--font-display` | 禁止写死 `14px`、`26px` |
+| 高度 | `--tabbar-h`、`--header-h`、`--sub-nav-h` | Vant 主题与之联动 |
+| 视口 | `--content-h-tab`、`--content-h-full` | 需要 calc 高度时使用 |
+
+## 布局骨架
+
+```
+.app-shell → .app-content → .route-outlet → .page-view → 页面根节点
+```
+
+- `App.vue` 中 **`.page-view` 与页面组件分离**，不要把 `page-view` 类挂在页面根上
+- 页面根节点由 `.page-view > *` 默认 `flex:1; min-height:0` 撑满高度
+- Tab 占位仅依赖 `van-tabbar placeholder`，**不要**再给 `.app-content` 加 `padding-bottom`
+
+## 工具类（`utilities.css`）
+
+| 类名 | 用途 |
+|------|------|
+| `.page` | PageShell 标准页：垂直 padding，水平全宽 |
+| `.scroll-y` | 可滚动区域（首页、任务列表） |
+| `.text-inset` | 标题/文案水平留白 |
+| `.full-bleed` | `van-cell-group`、统计 grid 等全宽块 |
+
+## 列表与 Vant
+
+- `van-cell-group` **不要** `inset`（全局已设 `--van-cell-group-inset-padding: 0`）
+- 页面级 scroll 容器：`flex:1; min-height:0; overflow-y:auto`，**不要**与 `.page-view` 同元素既 flex 又 scroll
+
+## 示例
+
+```vue
+<!-- ✅ 首页/列表页 -->
+<div class="welcome-scroll scroll-y">
+  <div class="hero text-inset">...</div>
+  <van-cell-group class="full-bleed">...</van-cell-group>
+</div>
+```
+
+```css
+/* ✅ */
+padding: var(--space-4) var(--page-margin-x);
+font-size: var(--font-md);
+max-width: min(90vw, 400px);
+
+/* ❌ */
+padding: 16px;
+font-size: 15px;
+max-width: 480px;
+```

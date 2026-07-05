@@ -1,0 +1,46 @@
+---
+description: luxiaoban Vue 项目通用编程规范
+globs: vue/**/*.{vue,ts}
+alwaysApply: false
+---
+
+# Vue 项目编程规范
+
+## 通用
+
+- **最小改动**：只改与需求相关的代码，不顺手重构无关文件
+- **交付前编译**：修改后执行 `npm run type-check` 或 `npm run build-only` 确保通过
+- **中文注释**：变量、方法、复杂逻辑、不常用 API 须加备注；C 语言代码另按可移植性要求
+
+## Vue / TypeScript
+
+- 使用 `<script setup lang="ts">`，组合式 API
+- 页面壳优先用 `PageShell`；子 Tab 模块用 `SubNavSwipeView` + `inner-scroll`
+- 列表分页用 `usePagedList` + `ScrollLoadList`，勿重复造轮子
+- API 调用放 `@/api`，类型放 `@/types`
+
+## 样式
+
+- 新样式优先 CSS 变量（见 `vue-responsive-layout` 规则）
+- 组件内用 `scoped`；改 Vant 内部结构用 `:deep()`
+- 全宽列表不加水平 padding；文案区块用 `.text-inset`
+
+## 路由与布局
+
+- Tab 页路由见 `@/config/tabs.ts`；`meta.hideTabBar` 控制隐藏底栏
+- 鉴权用 `@/router/guards.ts`，勿在组件内重复判断跳转逻辑
+
+## 禁止
+
+```typescript
+// ❌ 空 catch、吞掉错误
+try { await login() } catch (e) {}
+
+// ❌ 页面根上同时 flex 布局 + overflow 滚动（应拆成两层）
+<div class="page-view" style="overflow-y:auto;display:flex">...</div>
+```
+
+```css
+/* ❌ 写死壳层宽度 */
+.app-shell { max-width: 480px; }
+```
