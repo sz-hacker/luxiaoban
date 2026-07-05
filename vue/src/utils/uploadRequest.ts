@@ -42,14 +42,4 @@ function appendPreviewQuery(url: string): string {
   return formatRequestUrl(resolved)
 }
 
-/** EdgeOne Cloud Function 单文件上传上限（平台限制 6MB，multipart 留余量建议 ≤5MB） */
-export const EDGEONE_UPLOAD_MAX_BYTES = 5 * 1024 * 1024
-
-/** 超出 EdgeOne 代理上限时的提示（开发环境走 Vite 代理，无此限制） */
-export function edgeoneUploadSizeError(fileSize: number): string | null {
-  if (import.meta.env.DEV) return null
-  if (fileSize <= EDGEONE_UPLOAD_MAX_BYTES) return null
-  return `当前部署环境单文件上传建议不超过 5MB（平台硬限 6MB），该文件 ${(fileSize / 1024 / 1024).toFixed(1)}MB 超出限制。请压缩后重试，或使用 Web 端上传。`
-}
-
 export { API_BASE }

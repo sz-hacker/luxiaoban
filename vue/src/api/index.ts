@@ -1,5 +1,5 @@
 import http from './http'
-import { edgeoneUploadSizeError, getUploadOneUrl } from '@/utils/uploadRequest'
+import { getUploadOneUrl } from '@/utils/uploadRequest'
 import type {
   ApiResponse,
   CaseListParams,
@@ -48,9 +48,6 @@ export function changeAvatar(params: ChangeAvatarParams) {
  * @param file 本地图片文件
  */
 export function uploadAvatarFile(file: File): Promise<ApiResponse<UploadFileData>> {
-  const sizeError = edgeoneUploadSizeError(file.size)
-  if (sizeError) return Promise.reject(new Error(sizeError))
-
   const form = new FormData()
   form.append('file', file, file.name)
   form.append('file_type', 'avatar')

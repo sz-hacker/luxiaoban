@@ -1,5 +1,5 @@
 import { readSseStream } from '@/utils/sseStream'
-import { edgeoneUploadSizeError, getUploadOneUrl } from '@/utils/uploadRequest'
+import { getUploadOneUrl } from '@/utils/uploadRequest'
 import type { ApiResponse } from '@/types/api'
 import type {
   AgentDetail,
@@ -88,9 +88,6 @@ export function uploadChatFile(
   file: File,
   onProgress?: (percent: number) => void,
 ): Promise<ApiResponse<UploadFileData>> {
-  const sizeError = edgeoneUploadSizeError(file.size)
-  if (sizeError) return Promise.reject(new Error(sizeError))
-
   return new Promise((resolve, reject) => {
     const form = new FormData()
     form.append('file', file)
@@ -118,11 +115,11 @@ export function uploadChatFile(
     xhr.addEventListener('load', () => {
       try {
         if (xhr.status === 504) {
-          reject(new Error('上传网关超时：请确认已部署 cloud-functions/hb-cloud，或尝试更小文件（≤5MB）'))
+          reject(new Error('上传网关超时，请稍后重试'))
           return
         }
         if (xhr.status === 413) {
-          reject(new Error('文件过大，EdgeOne 单文件上传上限约 6MB'))
+          reject(new Error('文件过大，上传被拒绝'))
           return
         }
         const data = JSON.parse(xhr.responseText) as ApiResponse<UploadFileData>
