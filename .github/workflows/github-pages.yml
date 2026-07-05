@@ -1,0 +1,61 @@
+# GitHub Pages 演示部署：仅静态前端，API 直连测试源站
+# 访问地址：https://sz-hacker.github.io/luxiaoban/
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: vue/package-lock.json
+
+      - name: Install frontend dependencies
+        run: npm install --prefix vue
+
+      - name: Build for GitHub Pages
+        run: npm run build:edgeone --prefix vue
+        env:
+          VITE_BASE: /luxiaoban/
+          VITE_API_BASE: https://ai-test.luxiaoban.com/hb/api/v1
+          VITE_UPLOAD_PROXY: https://ai-test.luxiaoban.com/hb/api/v1
+
+      - name: Setup SPA fallback for client routing
+        run: cp vue/dist/index.html vue/dist/404.html
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: vue/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

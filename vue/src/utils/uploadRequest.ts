@@ -13,6 +13,20 @@ export function getUploadOneUrl(): string {
   return appendPreviewQuery(`${base}/upload/one`)
 }
 
+/** 是否为绝对 URL（GitHub Pages 演示环境直连源站 API 时使用） */
+function isAbsoluteUrl(url: string): boolean {
+  return /^https?:\/\//i.test(url)
+}
+
+/** 格式化请求 URL：同源用路径，跨域保留完整地址 */
+function formatRequestUrl(resolved: URL): string {
+  if (typeof window === 'undefined') return resolved.href
+  if (isAbsoluteUrl(resolved.href) && resolved.origin !== window.location.origin) {
+    return resolved.href
+  }
+  return `${resolved.pathname}${resolved.search}`
+}
+
 /** EdgeOne 预览域名需附带 eo_token */
 function appendPreviewQuery(url: string): string {
   if (typeof window === 'undefined') return url
@@ -20,12 +34,12 @@ function appendPreviewQuery(url: string): string {
   const page = new URL(window.location.href)
   const eoToken = page.searchParams.get('eo_token')
   const eoTime = page.searchParams.get('eo_time')
-  if (!eoToken || !eoTime) return url
-
   const resolved = new URL(url, window.location.origin)
+  if (!eoToken || !eoTime) return formatRequestUrl(resolved)
+
   resolved.searchParams.set('eo_token', eoToken)
   resolved.searchParams.set('eo_time', eoTime)
-  return `${resolved.pathname}${resolved.search}`
+  return formatRequestUrl(resolved)
 }
 
 /** EdgeOne Cloud Function 单文件上传上限（平台限制 6MB，multipart 留余量建议 ≤5MB） */

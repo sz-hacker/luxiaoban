@@ -51,6 +51,8 @@ function copyPdfWorkerPlugin() {
 
 // https://vite.dev/config/
 export default defineConfig({
+  /** GitHub Pages 子路径部署时设为 /luxiaoban/，EdgeOne 等根路径部署用默认 / */
+  base: process.env.VITE_BASE || '/',
   plugins: [
     vue(),
     /** Vant 组件按需自动引入 */
