@@ -14,9 +14,10 @@ permissions:
   pages: write
   id-token: write
 
+# 新部署取消排队中的旧部署，缓解 GitHub Pages 偶发 "Deployment failed, try again later"
 concurrency:
-  group: pages
-  cancel-in-progress: false
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
 
 env:
   PROXY_BASE: https://luxiaoban-proxy.vercel.app
@@ -50,6 +51,7 @@ jobs:
         run: |
           cp vue/dist/index.html vue/dist/404.html
           touch vue/dist/.nojekyll
+          chmod -R a+rX vue/dist
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
@@ -65,4 +67,8 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
+        with:
+          timeout: 900000
+          error_count: 20
+          reporting_interval: 10000
