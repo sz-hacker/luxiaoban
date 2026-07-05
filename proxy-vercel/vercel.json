@@ -6,9 +6,9 @@
     }
   },
   "rewrites": [
-    { "source": "/hb/(.*)", "destination": "/api/proxy?prefix=hb&path=$1" },
-    { "source": "/hb-cloud/(.*)", "destination": "/api/proxy?prefix=hb-cloud&path=$1" },
-    { "source": "/pdf-proxy/(.*)", "destination": "/api/proxy?prefix=pdf-proxy&path=$1" },
+    { "source": "/hb/(.*)", "destination": "/api/hb/$1" },
+    { "source": "/hb-cloud/(.*)", "destination": "/api/hb-cloud/$1" },
+    { "source": "/pdf-proxy/(.*)", "destination": "/api/pdf-proxy/$1" },
     { "source": "/_proxy-health", "destination": "/api/health" }
   ]
 }

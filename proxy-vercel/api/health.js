@@ -1,5 +1,5 @@
 /** 代理健康检查 */
-import { setCors } from '../lib/cors.mjs'
+import { setCors } from './_shared.mjs'
 
 export default function handler(req, res) {
   setCors(req, res)
