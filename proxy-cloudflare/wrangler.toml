@@ -1,0 +1,6 @@
+name = "luxiaoban-upload"
+main = "src/worker.js"
+compatibility_date = "2024-09-01"
+
+# Workers 请求体上限远高于 Vercel（演示环境大文件上传走此代理）
+workers_dev = true

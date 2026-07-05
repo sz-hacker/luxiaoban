@@ -21,6 +21,9 @@ concurrency:
 
 env:
   PROXY_BASE: https://luxiaoban-proxy.vercel.app
+  # 大文件上传优先走 Cloudflare Worker（在仓库 Variables 设置 CF_UPLOAD_PROXY_BASE）
+  # 例：https://luxiaoban-upload.<子域>.workers.dev/hb-cloud/api/v1
+  UPLOAD_PROXY: ${{ vars.CF_UPLOAD_PROXY_BASE || 'https://luxiaoban-proxy.vercel.app/hb-cloud/api/v1' }}
 
 jobs:
   build:
@@ -44,7 +47,7 @@ jobs:
         env:
           VITE_BASE: /luxiaoban/
           VITE_API_BASE: ${{ env.PROXY_BASE }}/hb/api/v1
-          VITE_UPLOAD_PROXY: ${{ env.PROXY_BASE }}/hb-cloud/api/v1
+          VITE_UPLOAD_PROXY: ${{ env.UPLOAD_PROXY }}
           VITE_PDF_PROXY_PREFIX: ${{ env.PROXY_BASE }}/pdf-proxy
 
       - name: Setup SPA fallback for client routing

@@ -1,0 +1,11 @@
+{
+  "name": "luxiaoban-upload-proxy",
+  "private": true,
+  "description": "GitHub Pages 演示用大文件上传代理（Cloudflare Workers）",
+  "scripts": {
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4.14.0"
+  }
+}
