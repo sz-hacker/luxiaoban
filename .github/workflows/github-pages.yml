@@ -1,5 +1,6 @@
-# GitHub Pages 演示部署：仅静态前端，API 直连测试源站
-# 访问地址：https://sz-hacker.github.io/luxiaoban/
+# GitHub Pages 演示部署：静态前端 + Vercel CORS 代理
+# 前端：https://sz-hacker.github.io/luxiaoban/
+# 代理：https://luxiaoban-proxy.vercel.app
 name: Deploy GitHub Pages
 
 on:
@@ -16,6 +17,9 @@ permissions:
 concurrency:
   group: pages
   cancel-in-progress: false
+
+env:
+  PROXY_BASE: https://luxiaoban-proxy.vercel.app
 
 jobs:
   build:
@@ -38,8 +42,9 @@ jobs:
         run: npm run build:edgeone --prefix vue
         env:
           VITE_BASE: /luxiaoban/
-          VITE_API_BASE: https://ai-test.luxiaoban.com/hb/api/v1
-          VITE_UPLOAD_PROXY: https://ai-test.luxiaoban.com/hb/api/v1
+          VITE_API_BASE: ${{ env.PROXY_BASE }}/hb/api/v1
+          VITE_UPLOAD_PROXY: ${{ env.PROXY_BASE }}/hb-cloud/api/v1
+          VITE_PDF_PROXY_PREFIX: ${{ env.PROXY_BASE }}/pdf-proxy
 
       - name: Setup SPA fallback for client routing
         run: cp vue/dist/index.html vue/dist/404.html

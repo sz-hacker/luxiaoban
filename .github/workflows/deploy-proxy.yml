@@ -1,0 +1,22 @@
+# 部署 CORS 反向代理到 Vercel（供 GitHub Pages 前端调用）
+# 代理地址：https://luxiaoban-proxy.vercel.app
+name: Deploy CORS Proxy
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy-proxy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy to Vercel
+        run: npx vercel deploy --prod --yes --name luxiaoban-proxy --token "$VERCEL_TOKEN"
+        working-directory: proxy-vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}

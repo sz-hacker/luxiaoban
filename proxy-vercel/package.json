@@ -1,0 +1,6 @@
+{
+  "name": "luxiaoban-proxy",
+  "private": true,
+  "description": "GitHub Pages 演示用 CORS 反向代理（部署到 Vercel）",
+  "type": "module"
+}

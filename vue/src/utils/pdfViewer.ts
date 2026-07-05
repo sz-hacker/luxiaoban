@@ -19,15 +19,19 @@ const docCache = new Map<string, PDFDocumentProxy>()
 /** 进行中的加载任务（同一 URL 并发请求合并为一次） */
 const loadingCache = new Map<string, Promise<PDFDocumentProxy>>()
 
+/** PDF 同源代理前缀（GitHub Pages 演示环境可设为 Vercel 代理完整 URL） */
+const PDF_PROXY_PREFIX = import.meta.env.VITE_PDF_PROXY_PREFIX || '/pdf-proxy'
+
 /**
  * 将外部 PDF 地址转为可 fetch 的同源 URL
- * 开发环境由 Vite `/pdf-proxy` 转发；生产需在 nginx 配置同等转发
+ * 开发环境由 Vite `/pdf-proxy` 转发；生产需在 nginx 或 Vercel 代理配置同等转发
  */
 export function resolvePdfFetchUrl(rawUrl: string): string {
   try {
     const parsed = new URL(rawUrl)
     if (PDF_PROXY_HOSTS.includes(parsed.hostname)) {
-      return `/pdf-proxy${parsed.pathname}${parsed.search}`
+      const prefix = PDF_PROXY_PREFIX.replace(/\/$/, '')
+      return `${prefix}${parsed.pathname}${parsed.search}`
     }
   } catch {
     /* 非法 URL 原样返回，由上层报错 */
