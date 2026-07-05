@@ -7,21 +7,6 @@ const API_BASE = import.meta.env.VITE_API_BASE || '/hb/api/v1'
 /** Cloud Function 上传代理前缀（对应 cloud-functions/hb-cloud/...） */
 const UPLOAD_PROXY_PREFIX = import.meta.env.VITE_UPLOAD_PROXY || '/hb-cloud/api/v1'
 
-/** Vercel Serverless 请求体硬上限约 4.5MB，预留安全余量 */
-export const VERCEL_UPLOAD_SAFE_MAX_BYTES = 4 * 1024 * 1024
-
-/** 当前上传是否经 Vercel 代理（受 4.5MB 平台限制） */
-export function isVercelUploadProxy(): boolean {
-  return /vercel\.app/i.test(UPLOAD_PROXY_PREFIX)
-}
-
-/** Vercel 代理下的文件大小校验；通过返回 null */
-export function vercelUploadSizeError(fileSize: number): string | null {
-  if (!isVercelUploadProxy()) return null
-  if (fileSize <= VERCEL_UPLOAD_SAFE_MAX_BYTES) return null
-  return '演示环境经 Vercel 上传限制约 4MB，请压缩案卷或联系管理员配置 Cloudflare 上传代理'
-}
-
 /** 单文件上传地址（XHR FormData） */
 export function getUploadOneUrl(): string {
   const base = UPLOAD_PROXY_PREFIX.replace(/\/$/, '')

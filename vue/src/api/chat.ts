@@ -1,5 +1,5 @@
 import { readSseStream } from '@/utils/sseStream'
-import { getUploadOneUrl, isVercelUploadProxy, vercelUploadSizeError } from '@/utils/uploadRequest'
+import { getUploadOneUrl } from '@/utils/uploadRequest'
 import type { ApiResponse } from '@/types/api'
 import type {
   AgentDetail,
@@ -88,11 +88,6 @@ export function uploadChatFile(
   file: File,
   onProgress?: (percent: number) => void,
 ): Promise<ApiResponse<UploadFileData>> {
-  const sizeError = vercelUploadSizeError(file.size)
-  if (sizeError) {
-    return Promise.reject(new Error(sizeError))
-  }
-
   return new Promise((resolve, reject) => {
     const form = new FormData()
     form.append('file', file)
@@ -124,10 +119,7 @@ export function uploadChatFile(
           return
         }
         if (xhr.status === 413) {
-          const hint = isVercelUploadProxy()
-            ? '文件超过 Vercel 代理 4MB 限制，请压缩案卷或配置 Cloudflare 上传代理'
-            : '文件过大，上传被拒绝'
-          reject(new Error(hint))
+          reject(new Error('文件过大，上传被拒绝'))
           return
         }
         const data = JSON.parse(xhr.responseText) as ApiResponse<UploadFileData>

@@ -1,11 +1,14 @@
-# 部署 CORS 反向代理到 Vercel（供 GitHub Pages 前端调用）
-# 代理地址：https://luxiaoban-proxy.vercel.app
+# 部署 CORS 反向代理到 Cloudflare Workers（供 GitHub Pages 前端调用）
+# 部署后地址示例：https://luxiaoban-proxy.<子域>.workers.dev
 name: Deploy CORS Proxy
 
 on:
   push:
     branches:
       - main
+    paths:
+      - 'proxy-cloudflare/**'
+      - '.github/workflows/deploy-proxy.yml'
   workflow_dispatch:
 
 jobs:
@@ -15,13 +18,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v5
+      - name: Deploy to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3
         with:
-          node-version: '22'
-
-      - name: Deploy to Vercel
-        run: npx vercel deploy --prod --yes --name luxiaoban-proxy --token "$VERCEL_TOKEN"
-        working-directory: proxy-vercel
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: proxy-cloudflare
+          command: deploy

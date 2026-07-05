@@ -1,7 +1,7 @@
 {
-  "name": "luxiaoban-upload-proxy",
+  "name": "luxiaoban-proxy",
   "private": true,
-  "description": "GitHub Pages 演示用大文件上传代理（Cloudflare Workers）",
+  "description": "GitHub Pages 演示用 CORS 反向代理（Cloudflare Workers）",
   "scripts": {
     "deploy": "wrangler deploy"
   },

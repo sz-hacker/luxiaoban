@@ -1,6 +1,6 @@
-name = "luxiaoban-upload"
+name = "luxiaoban-proxy"
 main = "src/worker.js"
 compatibility_date = "2024-09-01"
 
-# Workers 请求体上限远高于 Vercel（演示环境大文件上传走此代理）
+# GitHub Pages 演示环境统一 CORS 代理（API / 上传 / PDF）
 workers_dev = true

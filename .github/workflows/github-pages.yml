@@ -1,6 +1,6 @@
-# GitHub Pages 演示部署：静态前端 + Vercel CORS 代理
+# GitHub Pages 演示部署：静态前端 + Cloudflare Workers CORS 代理
 # 前端：https://sz-hacker.github.io/luxiaoban/
-# 代理：https://luxiaoban-proxy.vercel.app
+# 代理：https://luxiaoban-proxy.<子域>.workers.dev（见仓库 Variable CF_PROXY_BASE）
 name: Deploy GitHub Pages
 
 on:
@@ -20,10 +20,8 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  PROXY_BASE: https://luxiaoban-proxy.vercel.app
-  # 大文件上传优先走 Cloudflare Worker（在仓库 Variables 设置 CF_UPLOAD_PROXY_BASE）
-  # 例：https://luxiaoban-upload.<子域>.workers.dev/hb-cloud/api/v1
-  UPLOAD_PROXY: ${{ vars.CF_UPLOAD_PROXY_BASE || 'https://luxiaoban-proxy.vercel.app/hb-cloud/api/v1' }}
+  # 首次 Deploy CORS Proxy 成功后，在 Settings → Variables 设置 CF_PROXY_BASE
+  PROXY_BASE: ${{ vars.CF_PROXY_BASE }}
 
 jobs:
   build:
@@ -31,6 +29,15 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+
+      - name: Verify Cloudflare proxy base URL
+        run: |
+          if [ -z "$PROXY_BASE" ]; then
+            echo "::error::请在仓库 Variables 设置 CF_PROXY_BASE（Deploy CORS Proxy 成功后的 workers.dev 地址）"
+            exit 1
+          fi
+        env:
+          PROXY_BASE: ${{ env.PROXY_BASE }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v5
@@ -47,7 +54,7 @@ jobs:
         env:
           VITE_BASE: /luxiaoban/
           VITE_API_BASE: ${{ env.PROXY_BASE }}/hb/api/v1
-          VITE_UPLOAD_PROXY: ${{ env.UPLOAD_PROXY }}
+          VITE_UPLOAD_PROXY: ${{ env.PROXY_BASE }}/hb-cloud/api/v1
           VITE_PDF_PROXY_PREFIX: ${{ env.PROXY_BASE }}/pdf-proxy
 
       - name: Setup SPA fallback for client routing
