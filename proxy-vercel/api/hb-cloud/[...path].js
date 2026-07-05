@@ -1,7 +1,7 @@
 /**
- * 上传代理：/hb-cloud/* → 源站 /hb/*（与 EdgeOne Cloud Function 路径一致）
+ * 上传代理：/hb-cloud/* → 源站 /hb/*
  */
-import { forwardRequest, pathFromQuery, buildQueryString } from '../_lib/cors.mjs'
+import { forwardRequest, pathFromQuery, buildQueryString } from '../../lib/cors.mjs'
 
 const API_ORIGIN = 'https://ai-test.luxiaoban.com'
 

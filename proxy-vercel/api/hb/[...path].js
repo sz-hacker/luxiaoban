@@ -1,7 +1,7 @@
 /**
  * API 代理：/hb/* → https://ai-test.luxiaoban.com/hb/*
  */
-import { forwardRequest, pathFromQuery, buildQueryString } from '../_lib/cors.mjs'
+import { forwardRequest, pathFromQuery, buildQueryString } from '../../lib/cors.mjs'
 
 const API_ORIGIN = 'https://ai-test.luxiaoban.com'
 

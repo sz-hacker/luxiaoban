@@ -1,5 +1,5 @@
 /**
- * CORS 响应头：允许 GitHub Pages 与本地开发跨域访问代理
+ * CORS 与反向代理工具（放在 api/ 外，避免被 Vercel 当成 Serverless Function）
  */
 import { buffer } from 'node:stream/consumers'
 
@@ -28,14 +28,13 @@ export function setCors(req, res) {
 /** 处理浏览器预检 OPTIONS 请求 */
 export function handleOptions(req, res) {
   setCors(req, res)
-  res.status(204).end()
+  res.statusCode = 204
+  res.end()
 }
 
 /**
  * 转发请求到上游并回写响应（含 CORS）
- * @param {import('http').IncomingMessage} req
- * @param {import('http').ServerResponse} res
- * @param {string} targetUrl 完整上游 URL
+ * 使用原生 Node http 响应 API，兼容 Vercel Serverless
  */
 export async function forwardRequest(req, res, targetUrl) {
   setCors(req, res)
@@ -66,7 +65,7 @@ export async function forwardRequest(req, res, targetUrl) {
 
   const upstream = await fetch(targetUrl, init)
 
-  res.status(upstream.status)
+  res.statusCode = upstream.status
   upstream.headers.forEach((value, key) => {
     const lower = key.toLowerCase()
     if (lower === 'access-control-allow-origin') return

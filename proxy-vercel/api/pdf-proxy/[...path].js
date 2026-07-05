@@ -1,7 +1,7 @@
 /**
- * PDF 代理：/pdf-proxy/* → 百度云 BOS（供 pdf.js 预览）
+ * PDF 代理：/pdf-proxy/* → 百度云 BOS
  */
-import { forwardRequest, pathFromQuery, buildQueryString } from '../_lib/cors.mjs'
+import { forwardRequest, pathFromQuery, buildQueryString } from '../../lib/cors.mjs'
 
 const PDF_ORIGIN = 'https://huanbao.bj.bcebos.com'
 

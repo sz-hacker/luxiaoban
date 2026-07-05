@@ -1,5 +1,10 @@
 {
   "version": 2,
+  "functions": {
+    "api/**/*.js": {
+      "maxDuration": 60
+    }
+  },
   "rewrites": [
     { "source": "/hb/(.*)", "destination": "/api/hb/$1" },
     { "source": "/hb-cloud/(.*)", "destination": "/api/hb-cloud/$1" },
