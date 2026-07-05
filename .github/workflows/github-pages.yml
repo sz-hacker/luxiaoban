@@ -53,8 +53,11 @@ jobs:
           touch vue/dist/.nojekyll
           chmod -R a+rX vue/dist
 
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v5
         with:
           path: vue/dist
 
@@ -68,7 +71,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
-        with:
-          timeout: 900000
-          error_count: 20
-          reporting_interval: 10000
