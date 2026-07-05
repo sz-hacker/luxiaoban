@@ -1,3 +1,12 @@
 {
-  "version": 2
+  "version": 2,
+  "functions": {
+    "api/upload.js": {
+      "maxDuration": 120,
+      "memory": 1024
+    }
+  },
+  "rewrites": [
+    { "source": "/hb-cloud/(.*)", "destination": "/api/upload?path=$1" }
+  ]
 }

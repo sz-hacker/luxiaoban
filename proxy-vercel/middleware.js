@@ -30,11 +30,8 @@ function buildCorsHeaders(request) {
   return headers
 }
 
-/** 根据请求路径拼上游 URL */
+/** 根据请求路径拼上游 URL（大文件上传 /hb-cloud 走 Serverless，不经 Middleware） */
 function buildUpstreamUrl(pathname, search) {
-  if (pathname.startsWith('/hb-cloud/')) {
-    return `${API_ORIGIN}/hb/${pathname.slice('/hb-cloud/'.length)}${search}`
-  }
   if (pathname.startsWith('/hb/')) {
     return `${API_ORIGIN}${pathname}${search}`
   }
@@ -85,5 +82,5 @@ export default async function middleware(request) {
 }
 
 export const config = {
-  matcher: ['/_proxy-health', '/hb/:path*', '/hb-cloud/:path*', '/pdf-proxy/:path*'],
+  matcher: ['/_proxy-health', '/hb/:path*', '/pdf-proxy/:path*'],
 }
