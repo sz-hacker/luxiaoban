@@ -83,6 +83,19 @@ export function pathFromQuery(query) {
   return raw || ''
 }
 
+/** 从 query 或 URL 解析代理子路径（兼容 Vercel rewrite） */
+export function resolveProxyPath(req, apiPrefix) {
+  const fromQuery = pathFromQuery(req.query)
+  if (fromQuery) return fromQuery
+
+  const url = new URL(req.url || '/', 'http://localhost')
+  const prefix = `/api/${apiPrefix}/`
+  if (url.pathname.startsWith(prefix)) {
+    return url.pathname.slice(prefix.length)
+  }
+  return ''
+}
+
 /** 保留除 path 外的查询参数 */
 export function buildQueryString(query) {
   const params = new URLSearchParams()
