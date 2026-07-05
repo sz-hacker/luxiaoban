@@ -1,0 +1,44 @@
+# push 到 main 时自动构建并部署到 EdgeOne Pages
+# 文档：https://pages.edgeone.ai/zh/document/use-github-actions
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.18.0'
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            vue/package-lock.json
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build EdgeOne package
+        run: npm run build
+
+      - name: Verify build output
+        run: |
+          test -d edgeone/dist
+          test -d edgeone/edge-functions
+          test -d edgeone/cloud-functions
+          test -f edgeone/edgeone.json
+
+      - name: Deploy to EdgeOne Pages
+        run: npx edgeone pages deploy ./edgeone -n luxiaoban -t ${{ secrets.EDGEONE_API_TOKEN }}
+        env:
+          EDGEONE_API_TOKEN: ${{ secrets.EDGEONE_API_TOKEN }}
