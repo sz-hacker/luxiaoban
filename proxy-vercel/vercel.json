@@ -1,14 +1,3 @@
 {
-  "version": 2,
-  "functions": {
-    "api/**/*.js": {
-      "maxDuration": 60
-    }
-  },
-  "rewrites": [
-    { "source": "/hb/(.*)", "destination": "/api/hb/$1" },
-    { "source": "/hb-cloud/(.*)", "destination": "/api/hb-cloud/$1" },
-    { "source": "/pdf-proxy/(.*)", "destination": "/api/pdf-proxy/$1" },
-    { "source": "/_proxy-health", "destination": "/api/health" }
-  ]
+  "version": 2
 }
