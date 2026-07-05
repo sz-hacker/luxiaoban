@@ -1,6 +1,6 @@
 # GitHub Pages 演示部署：静态前端 + Cloudflare Workers CORS 代理
 # 前端：https://sz-hacker.github.io/luxiaoban/
-# 代理：https://luxiaoban-proxy.<子域>.workers.dev（见仓库 Variable CF_PROXY_BASE）
+# 代理：https://luxiaoban-proxy.sz26012450.workers.dev
 name: Deploy GitHub Pages
 
 on:
@@ -20,8 +20,8 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  # 首次 Deploy CORS Proxy 成功后，在 Settings → Variables 设置 CF_PROXY_BASE
-  PROXY_BASE: ${{ vars.CF_PROXY_BASE }}
+  # 可通过仓库 Variable CF_PROXY_BASE 覆盖
+  PROXY_BASE: ${{ vars.CF_PROXY_BASE || 'https://luxiaoban-proxy.sz26012450.workers.dev' }}
 
 jobs:
   build:
@@ -29,15 +29,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
-
-      - name: Verify Cloudflare proxy base URL
-        run: |
-          if [ -z "$PROXY_BASE" ]; then
-            echo "::error::请在仓库 Variables 设置 CF_PROXY_BASE（Deploy CORS Proxy 成功后的 workers.dev 地址）"
-            exit 1
-          fi
-        env:
-          PROXY_BASE: ${{ env.PROXY_BASE }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v5
