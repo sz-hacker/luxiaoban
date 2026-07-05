@@ -26,10 +26,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: '22'
           cache: npm
@@ -47,10 +47,12 @@ jobs:
           VITE_PDF_PROXY_PREFIX: ${{ env.PROXY_BASE }}/pdf-proxy
 
       - name: Setup SPA fallback for client routing
-        run: cp vue/dist/index.html vue/dist/404.html
+        run: |
+          cp vue/dist/index.html vue/dist/404.html
+          touch vue/dist/.nojekyll
 
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: vue/dist
 

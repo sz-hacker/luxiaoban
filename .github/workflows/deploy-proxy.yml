@@ -13,7 +13,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '22'
 
       - name: Deploy to Vercel
         run: npx vercel deploy --prod --yes --name luxiaoban-proxy --token "$VERCEL_TOKEN"

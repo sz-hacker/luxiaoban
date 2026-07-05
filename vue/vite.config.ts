@@ -66,6 +66,10 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  build: {
+    /** GitHub Pages 子路径部署时关闭 modulePreload，避免 CSS preload 404 */
+    modulePreload: process.env.VITE_BASE ? false : undefined,
+  },
   server: {
     /** 监听 0.0.0.0，允许局域网通过 IP（如 192.168.31.44:5173）访问 */
     host: true,
